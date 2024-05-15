@@ -1,0 +1,21 @@
+F1 dataset with weather data, car telemetrics, lap telemetrics
+
+Heatmap of overtaking zones/breaking zones
+
+What is optimal layout for overtaking
+	- compare different track layouts to solve
+	example: Overtaking into a hairpin is popular on tack 1 but not on track 2. Why?
+
+which corners are most dangerous
+	example: car goes into corner 2, but stops transmitting further data. Then we know something happend in corner 2
+
+Which drivers are best in different weather conditions
+
+What makes a car good, corner speed vs top speed
+	example: we find corner speed by first detecting corners and then we look at average speed through that corner.
+		We find top speed by taking max on straights. straights are not corners
+
+which tracks does car 1 perform good on.
+	example: if car 1 is good at top speed, does it win on speed tracks such as monza
+
+how does weather influence the car telemetrics and so on.
