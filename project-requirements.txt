@@ -1,0 +1,9 @@
+pages (without references and appendices) - 7-11 pages for groups of size 2
+must contain at least one figure with geospatial data visualization
+
+gitlog.txt: Your repo’s git log, e.g. by running: git log > gitlog.txt
+
+code.zip: One zip file containing Jupyter notebook(s) (.ipynb) of your commented code that
+runs fully without errors, assuming that all used data files are in place, and reproduces
+your findings. Do not include the data files here
+
