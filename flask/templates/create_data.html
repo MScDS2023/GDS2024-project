@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dropdown Menu Example</title>
+    <style>
+        body {
+            background-color: #1c1c1c;
+            color: white;
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .dropdown-container {
+            display: flex;
+            gap: 10px;
+        }
+        .dropdown {
+            background-color: #2d2d2d;
+            border: 1px solid #3e3e3e;
+            border-radius: 5px;
+            padding: 10px;
+            display: flex;
+            align-items: center;
+            width: 150px;
+        }
+        .dropdown select {
+            background-color: #2d2d2d;
+            color: white;
+            border: none;
+            margin-left: 10px;
+            width: 100%;
+        }
+        .dropdown select:focus {
+            outline: none;
+        }
+        .icon {
+            margin-right: 5px;
+        }
+        .submit-btn {
+            background-color: #ffc107;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .submit-btn:hover {
+            background-color: #e0a800;
+        }
+    </style>
+</head>
+<body>
+    <form action="/idk" method="POST">
+        <div class="dropdown-container">
+            <div class="dropdown">
+                <span class="icon">📅</span>
+                <select name="year">
+                    <option value="2023">2023</option>
+                    <option value="2022">2022</option>
+                    <option value="2021">2021</option>
+                    <!-- Add more years as needed -->
+                </select>
+            </div>
+            <div class="dropdown">
+                <span class="icon">🏁</span>
+                <select name="track">
+                    <option value="monza">Monza Grand Prix</option>
+                    <option value="bahrain">Bahrain Grand Prix</option>
+                    <!-- Add more tracks as needed -->
+                </select>
+            </div>
+            <div class="dropdown">
+                <span class="icon">🏎️</span>
+                <select name="event_type">
+                    <option value="Race">Race</option>
+                    <option value="Qualifying">Qualifying</option>
+                    <option value="Practice">Practice</option>
+                    <!-- Add more event types as needed -->
+                </select>
+            </div>
+            <button type="submit" class="submit-btn">Submit</button>
+        </div>
+    </form>
+</body>
+</html>
