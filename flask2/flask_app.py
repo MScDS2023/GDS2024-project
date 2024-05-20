@@ -1,4 +1,4 @@
-from flask import Flask, render_template, send_from_directory
+from flask import Flask, render_template
 
 app = Flask(__name__)
 
@@ -8,7 +8,7 @@ def index():
 
 @app.route('/something1/')
 def something1():
-    return "You are on the Something 1 page."
+    return render_template('dashboard.html')
 
 @app.route('/something2/')
 def something2():
@@ -23,4 +23,4 @@ def something4():
     return "You are on the Something 4 page."
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='0.0.0.0', port=5000, debug=True)
