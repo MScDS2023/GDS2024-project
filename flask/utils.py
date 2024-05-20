@@ -104,7 +104,7 @@ def create_sample_map(session, centroid):
     scaled_down = coordinate_shift(centroid, f1_api_coords)
     shifted_line = shift_centroid(scaled_down,centroid)
 
-
+ 
     # Update your GeoDataFrame  
     gdf = gpd.GeoDataFrame(geometry=[shifted_line], crs="EPSG:4326")    
     new_projected = gdf.to_crs(epsg=32632)  
