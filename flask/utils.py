@@ -51,7 +51,8 @@ def create_buffered_track(geojson_path: str):
 def mapping_dict(track: str):
     d = {
         "monza": "../bacinger f1-circuits master circuits/it-1922.geojson",
-        "bahrain":"../bacinger f1-circuits master circuits/bh-2002.geojson"
+        "bahrain":"../bacinger f1-circuits master circuits/bh-2002.geojson",
+        "Spielberg": "../bacinger f1-circuits master circuits/at-1969.geojson"
     }
     return d[track]
 
@@ -88,7 +89,6 @@ def shift_centroid(relative_line,original_centroid):
     # Calculate the distance to translate in each direction  
     dx = original_centroid.x - relative_line.centroid.x  
     dy = original_centroid.y - relative_line.centroid.y  
-    #print(dx, dy)
     #dx = -0.004080352801855369
     #dy = -0.0063870841787121435
     # Shift the LineString  
@@ -98,6 +98,13 @@ def shift_centroid(relative_line,original_centroid):
 def shift_centroid_monza(relative_line):
     dx = -0.004080352801855369
     dy = -0.0063870841787121435
+    # Shift the LineString  
+    shifted_line = translate(relative_line, xoff=dx, yoff=dy)  
+    return shifted_line
+
+def shift_centroid_redbull_ring(relative_line):
+    dx = 0.0029447601749765795
+    dy = -0.001912651777622898
     # Shift the LineString  
     shifted_line = translate(relative_line, xoff=dx, yoff=dy)  
     return shifted_line
@@ -124,7 +131,6 @@ def save_api_data(year: int, track: str, event_type: str, data_function: Callabl
     file = mapping_dict(track) 
 
     track_coordinates = gpd.read_file(file) #This is monza
-    #monza_track = gpd.read_file("bacinger f1-circuits master circuits/nl-1948.geojson")
 
     centroid = track_coordinates.geometry.centroid.iloc[0]
 
@@ -152,8 +158,10 @@ def get_corners_transformed(session,centroid, track_name):
     scaled_down = coordinate_shift(centroid, coords)
     if track_name == "monza":
         shifted_line = shift_centroid_monza(scaled_down)
+    elif track_name == "Spielberg":
+        shifted_line = shift_centroid_redbull_ring(scaled_down)
     else:
-        print("miav")
+        print("miav??")
 
     data['shifted_x'] = [x for x, y in shifted_line.coords]
     data['shifted_y'] = [y for x, y in shifted_line.coords]
@@ -191,7 +199,6 @@ def add_marker(map, centroid, track_name, index):
 
 
 def folium_with_corners(year, track_name, event_type):
-
     track_geojson = mapping_dict(track_name)
 
     session = pull_data(year, track_name, event_type)
@@ -211,7 +218,7 @@ def folium_with_corners(year, track_name, event_type):
 
 
     for  counter, point in enumerate(all_centroids):
-        add_marker(m,point, "monza", counter)
+        add_marker(m,point, track_name, counter)
     m.save(f"templates/created_data/{year}_{track_name}_{event_type}.html")
     #return m._repr_html_()
 

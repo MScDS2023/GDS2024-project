@@ -42,8 +42,6 @@ def show_data():
 
 
 
-
-
 @app.route('/dashboard')
 def dashboard():
     track_name = request.args.get('track_name')
