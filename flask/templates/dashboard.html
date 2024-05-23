@@ -7,9 +7,14 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f0f0f0;
+            background-color: #1c1c1c;
+            color: white;
             margin: 0;
             padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
         }
         .container {
             display: flex;
@@ -19,9 +24,18 @@
             padding: 20px;
             max-width: 1000px;
             margin: auto;
-            background-color: #fff;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            background-color: #2d2d2d;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
             border-radius: 8px;
+        }
+        .title {
+            width: 100%;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .title h2 {
+            margin: 0;
+            color: #ffc107;
         }
         .image-container {
             text-align: center;
@@ -32,22 +46,74 @@
             max-height: 300px;
             margin: 10px;
             border-radius: 8px;
-            transition: transform 0.3s ease;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
         .image-container img:hover {
             transform: scale(1.05);
+            box-shadow: 0 0 15px rgba(255, 193, 7, 0.5);
+        }
+    </style>
+</head>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #1c1c1c;
+            color: white;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            align-items: center;
+            padding: 20px;
+            max-width: 1000px;
+            margin: auto;
+            background-color: #2d2d2d;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            border-radius: 8px;
         }
         .title {
             width: 100%;
             text-align: center;
             margin-bottom: 20px;
         }
+        .title h2 {
+            margin: 0;
+            color: #ffc107;
+        }
+        .image-container {
+            text-align: center;
+            margin: 10px;
+        }
+        .image-container img {
+            max-width: 300px;
+            max-height: 300px;
+            margin: 10px;
+            border-radius: 8px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .image-container img:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 15px rgba(255, 193, 7, 0.5);
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="title">
-            <h2>Driver Clusters</h2>
+            <h2>Corner {{ index }} of {{ track_name.capitalize() }}</h2>
         </div>
         <div class="image-container">
             <img src="{{ url_for('static', filename='dashboard/' ~ track_name ~ '/corner' ~ index ~ '/trajectory.png') }}" alt="Plot 1">

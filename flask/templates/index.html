@@ -3,21 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Educational Services</title>
+    <title>F1 Analysis</title>
     <style>
+        body {
+            background-color: #121212;
+            color: #ffffff;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
         .container {
             display: flex;
             justify-content: space-around;
             padding: 20px;
-            background-color: #f9f9f9;
+            width: 80%;
         }
         .card {
-            background-color: white;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            background-color: #1e1e1e;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
             padding: 20px;
             text-align: center;
             width: 30%;
             border-radius: 10px;
+            transition: transform 0.2s;
+        }
+        .card:hover {
+            transform: scale(1.05);
         }
         .card img {
             width: 50px;
@@ -26,20 +41,22 @@
         .card h3 {
             font-size: 1.5em;
             margin: 10px 0;
+            color: #ffc107;
         }
         .card p {
             font-size: 1em;
-            color: #666;
+            color: #bbbbbb;
         }
         .card a {
             display: inline-block;
             margin-top: 15px;
             padding: 10px 20px;
             background-color: #ffc107;
-            color: white;
+            color: #121212;
             text-decoration: none;
             border-radius: 5px;
             font-weight: bold;
+            transition: background-color 0.3s;
         }
         .card a:hover {
             background-color: #e0a800;
@@ -50,22 +67,16 @@
 
 <div class="container">
     <div class="card">
-        <img src="{{ url_for('static', filename='index/book-icon.png') }}" alt="Image1">
-        <h3>Select track for corner analysis</h3>
+        <img src="{{ url_for('static', filename='index/racetrack_yellow.png') }}" alt="racetrack">
+        <h3>Select track for analysis</h3>
         <p></p>
-        <a href="create_data/">Lets GO!</a>
+        <a href="create_data/">Let's GO!</a>
     </div>
     <div class="card">
-        <img src="teacher-icon.png" alt="miav">
+        <img src="{{ url_for('static', filename='index/analysis_yellow.png') }}" alt="analysis">
         <h3>See your awesome visualization</h3>
         <p></p>
         <a href="show_data/">Show me</a>
-    </div>
-    <div class="card">
-        <img src="book-icon.png" alt="Book Library & Stores">
-        <h3>Dashboard</h3>
-        <p></p>
-        <a href="Book_Library_Stores.html">Read More</a>
     </div>
 </div>
 

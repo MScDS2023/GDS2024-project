@@ -1,6 +1,5 @@
 
 from flask import Flask, request, render_template, render_template_string
-import geopandas as gpd
 from utils import folium_with_corners
 import os
 
@@ -42,6 +41,9 @@ def show_data():
 
 
 
+
+
+
 @app.route('/dashboard')
 def dashboard():
     track_name = request.args.get('track_name')
@@ -59,24 +61,24 @@ def render_the_map():
 
 
 @app.route('/idk', methods=['POST'])
-def idk():
+def display_track():
+    d = dict()
     year = int(request.form.get('year'))
     track = request.form.get('track')
     event_type = request.form.get('event_type')
-    
+        # Get checkbox values
+    d["throttle"] = request.form.get('throttle') == 'throttle'
+    d["speed"] = request.form.get('speed') == 'speed'
+    d["breaking"] = request.form.get('breaking') == 'breaking'
+    d["cluster"] = request.form.get('cluster') == 'cluster'
+
+
+    print(d)
+
     folium_with_corners(year,track, event_type)
     html = f"created_data/{year}_{track}_{event_type}.html"
 
     return render_template(html)
 
-
-
-
-
-
-
-
-
-
-if __name__ == '__main__':
-    app.run(debug=True)
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=5000, debug=True)
