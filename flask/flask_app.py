@@ -1,7 +1,7 @@
 
 from flask import Flask, request, render_template, render_template_string
 import geopandas as gpd
-from utils import save_api_data, create_sample_map ,folium_with_corners
+from utils import folium_with_corners
 import os
 
 
@@ -63,7 +63,6 @@ def idk():
     year = int(request.form.get('year'))
     track = request.form.get('track')
     event_type = request.form.get('event_type')
-
     
     folium_with_corners(year,track, event_type)
     html = f"created_data/{year}_{track}_{event_type}.html"
