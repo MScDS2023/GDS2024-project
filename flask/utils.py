@@ -95,6 +95,14 @@ def shift_centroid(relative_line,original_centroid):
     shifted_line = translate(relative_line, xoff=dx, yoff=dy)  
     return shifted_line
 
+def shift_centroid_monza(relative_line):
+    dx = -0.004080352801855369
+    dy = -0.0063870841787121435
+    # Shift the LineString  
+    shifted_line = translate(relative_line, xoff=dx, yoff=dy)  
+    return shifted_line
+
+
 
 def create_sample_map(session, centroid):
     laps = session.laps
@@ -128,5 +136,84 @@ def save_api_data(year: int, track: str, event_type: str, data_function: Callabl
     m = folium.Map(location=[centroid.y, centroid.x], zoom_start=14, tiles='https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', attr="Esri")  
     folium.GeoJson(projection).add_to(m)  
     m.save(f"templates/created_data/{year}_{track}_{event_type}.html")
+
+    
+
+def get_corners(session):
+    circuit_info = session.get_circuit_info()
+    corners_df = circuit_info.corners
+    return corners_df
+
+
+def get_corners_transformed(session,centroid, track_name):
+    data = get_corners(session)
+    coords = [(row['Y'],row['X']) for index,row in data.iterrows()]
+
+    scaled_down = coordinate_shift(centroid, coords)
+    if track_name == "monza":
+        shifted_line = shift_centroid_monza(scaled_down)
+    else:
+        print("miav")
+
+    data['shifted_x'] = [x for x, y in shifted_line.coords]
+    data['shifted_y'] = [y for x, y in shifted_line.coords]
+    gdf = gpd.GeoDataFrame(data, geometry=gpd.points_from_xy(data['shifted_x'], data['shifted_y']), crs="EPSG:4326").reset_index(drop=True)
+    return gdf.geometry
+
+
+def create_track_buffered(track_geojson):
+    # Load the GeoDataFrame
+    monza_track = gpd.read_file(track_geojson) #This is monza
+    #monza_track = gpd.read_file("bacinger f1-circuits master circuits/nl-1948.geojson")
+
+    monza_track_projected = monza_track.to_crs(epsg=32632)
+
+    # Process the geometry to add width by buffering (buffer distance in meters)
+    width_in_meters = 5  # Specify the width of the track. Adjust according to needs.
+    track_buffered = monza_track_projected.copy(deep = True)
+    track_buffered['geometry'] = track_buffered.geometry.buffer(width_in_meters)
+    return track_buffered
+
+
+
+def add_marker(map, centroid, track_name, index):
+    # Add a red marker with a click event to redirect to dashboard with track_name and index as query parameters
+    red_marker = folium.CircleMarker(
+        location=(centroid.y, centroid.x),
+        radius=7,
+        color="black",
+        fill=True,
+        fill_color='black'
+    )
+    red_marker.add_child(folium.Popup(f'<a href="/dashboard?track_name={track_name}&index={index}" target="_blank">Go to corner {index}</a>'))
+    red_marker.add_to(map)
+
+
+
+def folium_with_corners(year, track_name, event_type):
+
+    track_geojson = mapping_dict(track_name)
+
+    session = pull_data(year, track_name, event_type)
+
+    track_buffered = create_track_buffered(track_geojson)
+    track = gpd.read_file(track_geojson) #This is monza
+    
+    centroid = track.geometry.centroid.iloc[0]
+
+
+    all_centroids = get_corners_transformed(session,centroid, track_name)
+    # Create a folium map centered at the centroid
+    m = folium.Map(location=[centroid.y, centroid.x], zoom_start=15)
+
+    # Add the GeoDataFrame to the map
+    folium.GeoJson(track_buffered).add_to(m)
+
+
+    for  counter, point in enumerate(all_centroids):
+        add_marker(m,point, "monza", counter)
+    m.save(f"templates/created_data/{year}_{track_name}_{event_type}.html")
+    #return m._repr_html_()
+
 
     

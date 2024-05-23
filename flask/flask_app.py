@@ -1,7 +1,7 @@
 
 from flask import Flask, request, render_template, render_template_string
-
-from utils import save_api_data, create_sample_map
+import geopandas as gpd
+from utils import save_api_data, create_sample_map ,folium_with_corners
 import os
 
 
@@ -17,10 +17,6 @@ def index():
 @app.route('/create_data/')
 def create_data():
     return render_template("create_data.html")
-
-#@app.route("/show_data/")
-#def show_data():
-#    return render_template("created_data/2023_monza_R.html")
 
 
 
@@ -41,29 +37,49 @@ def show_data():
             return "File not found", 404
 
     # List all files in the specified directory
-    files = os.listdir(files_path)
+    files = [x for x in os.listdir(files_path) if x.endswith(".html")]
     return render_template('show_data.html', files=files)
 
 
-@app.route('/idk', methods=['POST'])
-def idk():
-    year = request.form.get('year')
-    track = request.form.get('track')
-    event_type = request.form.get('event_type')
-    
-    save_api_data(int(year), track, "R", create_sample_map )
-
-    # Redirect to a thank you page or back to the form
-    return "DONE"
 
 
 
+@app.route('/dashboard')
+def dashboard():
+    track_name = request.args.get('track_name')
+    index = request.args.get('index')
+    # Now you can use track_name and index as needed, for example, to render the template
+    return render_template('dashboard.html', track_name=track_name, index=index)
 
 
 
 @app.route('/monza')
 def render_the_map():
     return render_template('monza.html')
+
+
+
+
+@app.route('/idk', methods=['POST'])
+def idk():
+    year = int(request.form.get('year'))
+    track = request.form.get('track')
+    event_type = request.form.get('event_type')
+
+    
+    folium_with_corners(year,track, event_type)
+    html = f"created_data/{year}_{track}_{event_type}.html"
+
+    return render_template(html)
+
+
+
+
+
+
+
+
+
 
 if __name__ == '__main__':
     app.run(debug=True)
