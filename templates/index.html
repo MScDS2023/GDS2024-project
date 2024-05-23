@@ -3,70 +3,82 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Flask App with Images</title>
+    <title>F1 Analysis</title>
     <style>
         body {
+            background-color: #121212;
+            color: #ffffff;
             font-family: Arial, sans-serif;
-            background-color: #f0f0f0;
             margin: 0;
             padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
         }
         .container {
             display: flex;
             justify-content: space-around;
-            align-items: center;
-            flex-wrap: wrap;
             padding: 20px;
-            margin: 0 auto;
-            max-width: 1000px;
-            background-color: #fff;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            border-radius: 8px;
+            width: 80%;
         }
-        .image-container {
+        .card {
+            background-color: #1e1e1e;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+            padding: 20px;
             text-align: center;
-            margin: 10px;
+            width: 30%;
+            border-radius: 10px;
+            transition: transform 0.2s;
         }
-        .image-container img {
-            width: 200px;
-            height: 200px;
-            border-radius: 8px;
-            transition: transform 0.3s ease;
-        }
-        .image-container img:hover {
+        .card:hover {
             transform: scale(1.05);
         }
-        .image-container a {
-            display: block;
-            margin-top: 10px;
-            text-decoration: none;
-            color: #007BFF;
-            font-weight: bold;
-            transition: color 0.3s ease;
+        .card img {
+            width: 50px;
+            height: 50px;
         }
-        .image-container a:hover {
-            color: #0056b3;
+        .card h3 {
+            font-size: 1.5em;
+            margin: 10px 0;
+            color: #ffc107;
+        }
+        .card p {
+            font-size: 1em;
+            color: #bbbbbb;
+        }
+        .card a {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 10px 20px;
+            background-color: #ffc107;
+            color: #121212;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+        .card a:hover {
+            background-color: #e0a800;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="image-container">
-            <img src="{{ url_for('static', filename='index_image/image1.png') }}" alt="Image 1">
-            <a href="/something1/">Go to Something 1</a>
-        </div>
-        <div class="image-container">
-            <img src="{{ url_for('static', filename='index_image/image2.png') }}" alt="Image 2">
-            <a href="/something2/">Go to Something 2</a>
-        </div>
-        <div class="image-container">
-            <img src="{{ url_for('static', filename='index_image/image3.png') }}" alt="Image 3">
-            <a href="/something3/">Go to Something 3</a>
-        </div>
-        <div class="image-container">
-            <img src="{{ url_for('static', filename='index_image/image4.png') }}" alt="Image 4">
-            <a href="/something4/">Go to Something 4</a>
-        </div>
+
+<div class="container">
+    <div class="card">
+        <img src="{{ url_for('static', filename='index/racetrack_yellow.png') }}" alt="racetrack">
+        <h3>Select track for analysis</h3>
+        <p></p>
+        <a href="create_data/">Let's GO!</a>
     </div>
+    <div class="card">
+        <img src="{{ url_for('static', filename='index/analysis_yellow.png') }}" alt="analysis">
+        <h3>See your awesome visualization</h3>
+        <p></p>
+        <a href="show_data/">Show me</a>
+    </div>
+</div>
+
 </body>
 </html>

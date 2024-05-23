@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Show Data</title>
+    <style>
+        body {
+            background-color: #1c1c1c;
+            color: white;
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .dropdown-container {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            align-items: center;
+        }
+        .dropdown {
+            background-color: #2d2d2d;
+            border: 1px solid #3e3e3e;
+            border-radius: 5px;
+            padding: 10px;
+            width: 200px;
+            text-align: center;
+        }
+        .dropdown select {
+            background-color: #2d2d2d;
+            color: white;
+            border: none;
+            width: 100%;
+        }
+        .dropdown select:focus {
+            outline: none;
+        }
+        .submit-btn {
+            background-color: #ffc107;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .submit-btn:hover {
+            background-color: #e0a800;
+        }
+    </style>
+</head>
+<body>
+    <form action="/show_data" method="POST">
+        <div class="dropdown-container">
+            <div class="dropdown">
+                <select name="selected_file" id="fileDropdown">
+                    {% for file in files %}
+                        <option value="{{ file }}">{{ file }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <button type="submit" class="submit-btn">Show Data</button>
+        </div>
+    </form>
+</body>
+</html>

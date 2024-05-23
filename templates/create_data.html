@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dropdown Menu Example</title>
+    <style>
+        body {
+            background-color: #1c1c1c;
+            color: white;
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .form-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+        .dropdown-container {
+            display: flex;
+            gap: 10px;
+        }
+        .dropdown {
+            background-color: #2d2d2d;
+            border: 1px solid #3e3e3e;
+            border-radius: 5px;
+            padding: 10px;
+            display: flex;
+            align-items: center;
+            width: 150px;
+        }
+        .dropdown select {
+            background-color: #2d2d2d;
+            color: white;
+            border: none;
+            margin-left: 10px;
+            width: 100%;
+        }
+        .dropdown select:focus {
+            outline: none;
+        }
+        .icon {
+            margin-right: 5px;
+        }
+        .checkbox-container {
+            display: flex;
+            gap: 10px;
+        }
+        .checkbox {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .checkbox input {
+            width: 16px;
+            height: 16px;
+        }
+        .submit-btn {
+            background-color: #ffc107;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .submit-btn:hover {
+            background-color: #e0a800;
+        }
+    </style>
+</head>
+<body>
+    <form action="/idk" method="POST" class="form-container">
+        <div class="dropdown-container">
+            <div class="dropdown">
+                <span class="icon">📅</span>
+                <select name="year">
+                    <option value="2023">2023</option>
+                    <option value="2022">2022</option>
+                    <option value="2021">2021</option>
+                    <!-- Add more years as needed -->
+                </select>
+            </div>
+            <div class="dropdown">
+                <span class="icon">🏁</span>
+                <select name="track">
+                    <option value="monza">Monza Grand Prix</option>
+                    <option value="Spielberg">Spielberg Grand Prix</option>
+                    <!-- Add more tracks as needed -->
+                </select>
+            </div>
+            <div class="dropdown">
+                <span class="icon">🏎️</span>
+                <select name="event_type">
+                    <option value="R">Race</option>
+                    <option value="Q">Qualifying</option>
+                    <option value="P">Practice</option>
+                    <!-- Add more event types as needed -->
+                </select>
+            </div>
+        </div>
+        <div class="checkbox-container">
+            <label class="checkbox">
+                <input type="checkbox" name="throttle" value="throttle">
+                Throttle
+            </label>
+            <label class="checkbox">
+                <input type="checkbox" name="speed" value="speed">
+                Speed
+            </label>
+            <label class="checkbox">
+                <input type="checkbox" name="breaking" value="breaking">
+                Breaking
+            </label>
+            <label class="checkbox">
+                <input type="checkbox" name="cluster" value="cluster">
+                Cluster
+            </label>
+        </div>
+        <button type="submit" class="submit-btn">Submit</button>
+    </form>
+</body>
+</html>
