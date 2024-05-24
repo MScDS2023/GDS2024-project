@@ -49,7 +49,7 @@ def dashboard():
     track_name = request.args.get('track_name')
     index = request.args.get('index')
     # Now you can use track_name and index as needed, for example, to render the template
-    return render_template('dashboard.html', track_name=track_name, index=index)
+    return render_template('dashboard.html', track_name=track_name.capitalize(), index=index)
 
 
 
@@ -69,7 +69,7 @@ def display_track():
         # Get checkbox values
     d["throttle"] = request.form.get('throttle') == 'throttle'
     d["speed"] = request.form.get('speed') == 'speed'
-    d["breaking"] = request.form.get('breaking') == 'breaking'
+    d["braking"] = request.form.get('braking') == 'braking'
     d["cluster"] = request.form.get('cluster') == 'cluster'
 
 

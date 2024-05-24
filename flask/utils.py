@@ -172,7 +172,6 @@ def get_corners_transformed(session,centroid, track_name):
 def create_track_buffered(track_geojson):
     # Load the GeoDataFrame
     monza_track = gpd.read_file(track_geojson) #This is monza
-    #monza_track = gpd.read_file("bacinger f1-circuits master circuits/nl-1948.geojson")
 
     monza_track_projected = monza_track.to_crs(epsg=32632)
 
