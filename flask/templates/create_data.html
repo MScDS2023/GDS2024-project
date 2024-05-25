@@ -88,7 +88,7 @@
             <div class="dropdown">
                 <span class="icon">🏁</span>
                 <select name="track">
-                    <option value="monza">Monza Grand Prix</option>
+                    <option value="Monza">Monza Grand Prix</option>
                     <option value="Spielberg">Spielberg Grand Prix</option>
                     <!-- Add more tracks as needed -->
                 </select>
@@ -100,6 +100,16 @@
                     <option value="Q">Qualifying</option>
                     <option value="P">Practice</option>
                     <!-- Add more event types as needed -->
+                </select>
+            </div>
+            <div class="dropdown">
+                <span class="icon">🕒</span>
+                <select name="lap">
+                    <option value="All Laps">All Laps</option>
+                    <!-- Add options for laps 1 to 10 -->
+                    {% for i in range(1, 11) %}
+                        <option value="{{ i }}">Lap {{ i }}</option>
+                    {% endfor %}
                 </select>
             </div>
         </div>

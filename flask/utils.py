@@ -50,9 +50,10 @@ def create_buffered_track(geojson_path: str):
 
 def mapping_dict(track: str):
     d = {
-        "monza": "../bacinger f1-circuits master circuits/it-1922.geojson",
+        "Monza": "../bacinger f1-circuits master circuits/it-1922.geojson",
         "bahrain":"../bacinger f1-circuits master circuits/bh-2002.geojson",
-        "Spielberg": "../bacinger f1-circuits master circuits/at-1969.geojson"
+        "Spielberg": "../bacinger f1-circuits master circuits/at-1969.geojson",
+        "Spa Francorchamps": "../bacinger f1-circuits master circuits/be-1925.geojson"
     }
     return d[track]
 
@@ -151,17 +152,27 @@ def get_corners(session):
     return corners_df
 
 
-def get_corners_transformed(session,centroid, track_name):
+def shift_centroid_new(relative_line,dx, dy):
+    # Shift the LineString  
+    shifted_line = translate(relative_line, xoff=dx, yoff=dy)  
+    return shifted_line
+
+
+
+def get_corners_transformed(session,centroid, track_name,dx_dy):
     data = get_corners(session)
     coords = [(row['Y'],row['X']) for index,row in data.iterrows()]
 
     scaled_down = coordinate_shift(centroid, coords)
-    if track_name == "monza":
+    if track_name == "Monza":
         shifted_line = shift_centroid_monza(scaled_down)
     elif track_name == "Spielberg":
         shifted_line = shift_centroid_redbull_ring(scaled_down)
     else:
-        print("miav??")
+        print(dx_dy,"hejsa")
+        dx, dy = dx_dy
+        shifted_line = shift_centroid_new(scaled_down,dx,dy)
+
 
     data['shifted_x'] = [x for x, y in shifted_line.coords]
     data['shifted_y'] = [y for x, y in shifted_line.coords]
@@ -197,7 +208,7 @@ def add_marker(map, centroid, track_name, index):
 
 
 
-def folium_with_corners(year, track_name, event_type):
+def folium_with_corners(year, track_name, event_type,dx_dy):
     track_geojson = mapping_dict(track_name)
 
     session = pull_data(year, track_name, event_type)
@@ -208,7 +219,7 @@ def folium_with_corners(year, track_name, event_type):
     centroid = track.geometry.centroid.iloc[0]
 
 
-    all_centroids = get_corners_transformed(session,centroid, track_name)
+    all_centroids = get_corners_transformed(session,centroid, track_name, dx_dy)
     # Create a folium map centered at the centroid
     m = folium.Map(location=[centroid.y, centroid.x], zoom_start=15)
 

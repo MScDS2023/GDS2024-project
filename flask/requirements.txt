@@ -4,3 +4,9 @@ Werkzeug==3.0.3
 folium==0.16.0
 fastf1==3.3.6
 geopandas==0.14.4
+imageio==2.34.1
+contextily==1.6.0
+matplotlib==3.9.0
+numpy==1.26.4
+pandas==2.2.2
+shapely==2.0.4
