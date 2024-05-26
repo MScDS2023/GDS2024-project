@@ -90,7 +90,7 @@ def display_track():
     event_type = request.form.get('event_type')
     num_laps = request.form.get('lap')
         # Get checkbox values
-
+    print(num_laps)
     d["Throttle"] = request.form.get('throttle') == 'throttle'
     d["Speed"] = request.form.get('speed') == 'speed'
     d["Brake"] = request.form.get('braking') == 'braking'
@@ -100,12 +100,9 @@ def display_track():
     d["Separate Laps"] = request.form.get('gif') == 'gif'
    
     dx_dy =  runner_function(track,d, year,event_type, num_laps)
-    
-    print("florian is done",dx_dy)
 
     folium_with_corners(year,track, event_type,dx_dy)
     html = f"created_data/{year}_{track}_{event_type}.html"
-    print(dx_dy,"12312312312312")
     return render_template(html)
 
 if __name__ == "__main__":

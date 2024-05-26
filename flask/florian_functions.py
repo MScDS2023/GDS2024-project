@@ -22,8 +22,6 @@ def find_track(directory, track):
     for filename in os.listdir(directory):
         if filename.endswith('.geojson'):  # Ensure the file is a shapefile
             track_layout = gpd.read_file(os.path.join(directory, filename))
-            print(track)
-            print(track_layout["Location"][0])
             if track == track_layout['Location'][0]:
                 # print(track_layout['Location'][0].split())  # Check if track name matches
                 original_centroid = track_layout.geometry.centroid.iloc[0]
@@ -43,8 +41,9 @@ def get_laps(session, num_laps):
             driver_laps = laps.pick_driver(driver)
             for counter, lap in enumerate(driver_laps.iterlaps()):
                 if num_laps != "All Laps":
-                    if counter == num_laps:
+                    if counter == int(num_laps):
                         break
+                print(counter)
                 telemetry = lap[1].get_telemetry()
                 telemetry['LapNumber'] = lap[1]['LapNumber']
                 driver_telemetry.append(telemetry)
