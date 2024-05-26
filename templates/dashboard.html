@@ -60,6 +60,10 @@
             transform: scale(1.05);
             box-shadow: 0 0 15px rgba(255, 193, 7, 0.5);
         }
+        .image-title {
+            color: #ffc107;
+            margin-bottom: 5px;
+        }
         .drivers-container {
             display: flex;
             flex-direction: column;
@@ -101,18 +105,23 @@
                 <h2>Corner {{ index }} of {{ track_name }}</h2>
             </div>
             <div class="image-container">
+                <div class="image-title">Trajectory Plot</div>
                 <img src="{{ url_for('static', filename='dashboard/' ~ track_name ~ '/corner' ~ index ~ '/Trajectory.png') }}" alt="Plot 1">
             </div>
             <div class="image-container">
+                <div class="image-title">Brake Plot</div>
                 <img src="{{ url_for('static', filename='dashboard/' ~ track_name ~ '/corner' ~ index ~ '/Brake.png') }}" alt="Plot 2">
             </div>
             <div class="image-container">
+                <div class="image-title">Speed Plot</div>
                 <img src="{{ url_for('static', filename='dashboard/' ~ track_name ~ '/corner' ~ index ~ '/Speed.png') }}" alt="Plot 3">
             </div>
             <div class="image-container">
+                <div class="image-title">Throttle Plot</div>
                 <img src="{{ url_for('static', filename='dashboard/' ~ track_name ~ '/corner' ~ index ~ '/Throttle.png') }}" alt="Plot 4">
             </div>
             <div class="image-container">
+                <div class="image-title">Lap Development GIF</div>
                 <img src="{{ url_for('static', filename='dashboard/' ~ track_name ~ '/corner' ~ index ~ '/' ~ track_name ~ '.gif') }}" alt="Plot 5">
             </div>
         </div>
