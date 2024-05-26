@@ -16,6 +16,8 @@ import re
 
 import warnings
 warnings.filterwarnings("ignore")
+plt.switch_backend('Agg')
+
 
 
 def find_track(directory, track):
@@ -43,7 +45,6 @@ def get_laps(session, num_laps):
                 if num_laps != "All Laps":
                     if counter == int(num_laps):
                         break
-                print(counter)
                 telemetry = lap[1].get_telemetry()
                 telemetry['LapNumber'] = lap[1]['LapNumber']
                 driver_telemetry.append(telemetry)
@@ -62,7 +63,6 @@ def get_laps(session, num_laps):
     concatenated_df.reset_index(drop=True, inplace=True)
     concatenated_df['LapNumber'] = concatenated_df['LapNumber'].astype(int)
     concatenated_df = concatenated_df[(concatenated_df['Source'] == 'car') & (concatenated_df['Status'] == 'OnTrack')]
-    print(concatenated_df.LapNumber.unique())
     return concatenated_df
 
 def interpolate(df):
@@ -128,8 +128,9 @@ def coordinate_shift(original_centroid, f1_api_coords):
       
     # conversion factors - these are approximations, adjust as necessary  
     # 1 degree of latitude is approximately 111 km, and 1 degree of longitude is approximately 111 km multiplied by the cosine of the latitude  
-    km_per_degree_lat = 1 / 111  
-    km_per_degree_lon = 1 / (111 * math.cos(math.radians(centroid_lat)))  
+    #Old was 111 for both
+    km_per_degree_lat = 1 / 110.574  
+    km_per_degree_lon = 1 / (111.320 * math.cos(math.radians(centroid_lat)))  
     
     # your array of tuples  
     xy_coordinates = f1_api_coords
@@ -152,8 +153,6 @@ def calculate_dx_dy(original_centroid, df):
     test = coordinate_shift(original_centroid,coords)
     dx_all = original_centroid.x - test.centroid.x
     dy_all = original_centroid.y - test.centroid.y
-    print(dx_all, "hejsa")
-    print(dy_all,"")
     return dx_all, dy_all
 
 
@@ -196,7 +195,7 @@ def plot_all_drivers_for_lap(plot_data, lap,centroid,plot_type,corner,corn_df,dx
         data = plot_data[(plot_data['driver'] == driver) & (plot_data['LapNumber'] == lap)]
         if data.empty:
             continue
-        data_ = filter_df_to_corner(data,corner,500,corn_df,1000)
+        data_ = filter_df_to_corner(data,corner,100,corn_df,1000)
         coords = [(row['Y'], row['X']) for index, row in data_.iterrows()]
         try:
             scaled_down = coordinate_shift(centroid,coords)
@@ -227,7 +226,8 @@ def plot_all_drivers_for_lap(plot_data, lap,centroid,plot_type,corner,corn_df,dx
 
     if plot_type == 'Trajectory':
         ax = all_gdf.plot(figsize=(10,14),color = 'black',linewidth = 0.1, alpha = 1)
-        cx.add_basemap(ax, source=cx.providers.Esri.WorldImagery)
+
+        cx.add_basemap(ax, source=cx.providers.Esri.WorldImagery, zoom=19)
         plt.title(f'Lap {lap} - All Drivers')
         plt.tight_layout()
         plt.savefig(os.path.join(save_path,f'Trajectory Lap {lap}.png'))
@@ -235,7 +235,7 @@ def plot_all_drivers_for_lap(plot_data, lap,centroid,plot_type,corner,corn_df,dx
     
     elif plot_type in ['Speed','Brake','Throttle']:
         ax = all_gdf.plot(column=plot_type, legend=True, figsize=(10, 14), cmap='OrRd', markersize=0.4, alpha=1)
-        cx.add_basemap(ax, source=cx.providers.Esri.WorldImagery)
+        cx.add_basemap(ax, source=cx.providers.Esri.WorldImagery, zoom=19)
         plt.title(f'Lap {lap} - All Drivers')
         plt.tight_layout()
         plt.savefig(os.path.join(save_path,f'{plot_type} Lap {lap}.png'))
@@ -253,7 +253,7 @@ def plot_all_laps_all_drivers(plot_test, centroid,plot_type,corner,corn_df,dx,dy
             data = plot_test[(plot_test['driver'] == driver) & (plot_test['LapNumber'] == lap)]
             if data.empty:
                 continue
-            data_ = filter_df_to_corner(data,corner,500,corn_df,1000)
+            data_ = filter_df_to_corner(data,corner,100,corn_df,1000)
             coords = [(row['Y'], row['X']) for index, row in data_.iterrows()]
             try:
                 scaled_down = coordinate_shift(centroid,coords)
@@ -286,7 +286,7 @@ def plot_all_laps_all_drivers(plot_test, centroid,plot_type,corner,corn_df,dx,dy
     # ax = all_gdf.plot(column='Speed', legend=True, figsize=(10, 14), cmap='OrRd', markersize=0.5, alpha=1)
     if plot_type == 'Trajectory':
         ax = all_gdf.plot(figsize=(10,14),color = 'black',linewidth = 0.1, alpha = 1)
-        cx.add_basemap(ax, source=cx.providers.Esri.WorldImagery)
+        cx.add_basemap(ax, source=cx.providers.Esri.WorldImagery, zoom=19)
         plt.title('All Laps - All Drivers')
         plt.tight_layout()
         plt.savefig(os.path.join(save_path,'Trajectory.png'))
@@ -295,7 +295,7 @@ def plot_all_laps_all_drivers(plot_test, centroid,plot_type,corner,corn_df,dx,dy
     
     elif plot_type in ['Speed','Brake','Throttle']:
         ax = all_gdf.plot(column=plot_type, legend=True, figsize=(10, 14), cmap='OrRd', markersize=0.4, alpha=1)
-        cx.add_basemap(ax, source=cx.providers.Esri.WorldImagery)
+        cx.add_basemap(ax, source=cx.providers.Esri.WorldImagery,zoom=19)
         plt.title('All Laps - All Drivers')
         plt.tight_layout()
         plt.savefig(os.path.join(save_path,f'{plot_type}.png'))
@@ -514,7 +514,7 @@ def runner_function(track_name:str,input_dict:dict,year:int,event_type:str,num_l
                     data = interpolated_df[(interpolated_df['driver'] == driver) & (interpolated_df['LapNumber'] == lap)]
                     if data.empty:
                         continue
-                    data_ = filter_df_to_corner(data,k,500,corners_df,1000)
+                    data_ = filter_df_to_corner(data,k,100,corners_df,1000)
                     filtered_dfs.append(data_)
 
 

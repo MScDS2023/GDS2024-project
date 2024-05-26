@@ -70,11 +70,9 @@ def dashboard():
 
         clusters_with_names = []
         for pairing in li:
-            #print(pairing)
             clusters_with_names.append([drivers[str(x)] for x in pairing if str(x) in drivers])
     except:
-        pass
-    clusters_with_names = [()]
+        clusters_with_names = [()]
     
     return render_template('dashboard.html', track_name=track_name.capitalize(), index=index, clusters_with_names=clusters_with_names)
 
@@ -98,7 +96,7 @@ def display_track():
     d["Trajectory"] = request.form.get('trajectory') == 'trajectory'
     d["Folium"] = request.form.get('folium') == 'folium'
     d["Separate Laps"] = request.form.get('gif') == 'gif'
-   
+    print(d)
     dx_dy =  runner_function(track,d, year,event_type, num_laps)
 
     folium_with_corners(year,track, event_type,dx_dy)

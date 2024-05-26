@@ -53,7 +53,12 @@ def mapping_dict(track: str):
         "Monza": "../bacinger f1-circuits master circuits/it-1922.geojson",
         "Sakhir":"../bacinger f1-circuits master circuits/bh-2002.geojson",
         "Spielberg": "../bacinger f1-circuits master circuits/at-1969.geojson",
-        "Spa Francorchamps": "../bacinger f1-circuits master circuits/be-1925.geojson"
+        "Spa Francorchamps": "../bacinger f1-circuits master circuits/be-1925.geojson",
+        "Monaco":"../bacinger f1-circuits master circuits/mc-1929.geojson",
+        "Melbourne":"../bacinger f1-circuits master circuits/au-1953.geojson",
+        "Silverstone":"../bacinger f1-circuits master circuits/gb-1948.geojson",
+        "Zandvoort":"../bacinger f1-circuits master circuits/nl-1948.geojson"
+
     }
     return d[track]
 
@@ -65,8 +70,8 @@ def coordinate_shift(original_centroid, f1_api_coords):
       
     # conversion factors - these are approximations, adjust as necessary  
     # 1 degree of latitude is approximately 111 km, and 1 degree of longitude is approximately 111 km multiplied by the cosine of the latitude  
-    km_per_degree_lat = 1 / 111  
-    km_per_degree_lon = 1 / (111 * math.cos(math.radians(centroid_lat)))  
+    km_per_degree_lat = 1 / 110.574  
+    km_per_degree_lon = 1 / (111.320 * math.cos(math.radians(centroid_lat)))  
     
     # your array of tuples  
     xy_coordinates = f1_api_coords
