@@ -410,7 +410,7 @@ def runner_function(track_name:str,input_dict:dict,year:int,event_type:str,num_l
         print(e)
     
     dx,dy = calculate_dx_dy(original_centroid,interpolated_df) # long time
-    if track_name.capitalize() in ["Monza", "Speilberg"]:
+    if track_name.capitalize() in ["Monza"]:
         return dx,dy
 
 
