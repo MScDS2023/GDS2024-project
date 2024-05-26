@@ -16,7 +16,7 @@ import re
 
 import warnings
 warnings.filterwarnings("ignore")
-plt.switch_backend('Agg')
+# plt.switch_backend('Agg')
 
 
 
