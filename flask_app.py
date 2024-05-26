@@ -1,8 +1,10 @@
 
 from flask import Flask, request, render_template, render_template_string
 from utils import folium_with_corners
+from florian_functions import runner_function
 import os
-
+import pandas as pd
+import json
 
 app = Flask(__name__)
 
@@ -42,6 +44,9 @@ def show_data():
 
 
 
+ 
+
+ 
 
 
 @app.route('/dashboard')
@@ -49,13 +54,28 @@ def dashboard():
     track_name = request.args.get('track_name')
     index = request.args.get('index')
     # Now you can use track_name and index as needed, for example, to render the template
-    return render_template('dashboard.html', track_name=track_name, index=index)
+    
+    f = open('static/drivers.json')
+    drivers = json.load(f)
+    try:
+        clusters = pd.read_csv(f"static/dashboard/{track_name.capitalize()}/corner{index}/clusters.csv")
+        li = []
+        for i in range(max(clusters.Cluster)):
+            sub = clusters[clusters["Cluster"] == i]["driver"]
+            li.append((sub.iloc[0],sub.iloc[1]))
 
+        clusters_with_names = []
+        for pairing in li:
+            clusters_with_names.append([drivers[driver] for driver in pairing if driver in drivers])
 
+        clusters_with_names = []
+        for pairing in li:
+            clusters_with_names.append([drivers[str(x)] for x in pairing if str(x) in drivers])
+    except:
+        clusters_with_names = [()]
+    
+    return render_template('dashboard.html', track_name=track_name.capitalize(), index=index, clusters_with_names=clusters_with_names)
 
-@app.route('/monza')
-def render_the_map():
-    return render_template('monza.html')
 
 
 
@@ -66,18 +86,21 @@ def display_track():
     year = int(request.form.get('year'))
     track = request.form.get('track')
     event_type = request.form.get('event_type')
+    num_laps = request.form.get('lap')
         # Get checkbox values
-    d["throttle"] = request.form.get('throttle') == 'throttle'
-    d["speed"] = request.form.get('speed') == 'speed'
-    d["breaking"] = request.form.get('breaking') == 'breaking'
-    d["cluster"] = request.form.get('cluster') == 'cluster'
-
-
+    print(num_laps)
+    d["Throttle"] = request.form.get('throttle') == 'throttle'
+    d["Speed"] = request.form.get('speed') == 'speed'
+    d["Brake"] = request.form.get('braking') == 'braking'
+    d["Cluster"] = request.form.get('cluster') == 'cluster'
+    d["Trajectory"] = request.form.get('trajectory') == 'trajectory'
+    d["Folium"] = request.form.get('folium') == 'folium'
+    d["Separate Laps"] = request.form.get('gif') == 'gif'
     print(d)
+    dx_dy =  runner_function(track,d, year,event_type, num_laps)
 
-    folium_with_corners(year,track, event_type)
+    folium_with_corners(year,track, event_type,dx_dy)
     html = f"created_data/{year}_{track}_{event_type}.html"
-
     return render_template(html)
 
 if __name__ == "__main__":

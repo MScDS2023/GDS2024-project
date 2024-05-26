@@ -12,21 +12,29 @@
             margin: 0;
             padding: 0;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+            overflow: auto;
+        }
+        .main-container {
+            display: flex;
+            justify-content: space-between;
+            max-width: 1200px;
+            width: 100%;
+            padding: 20px;
+            background-color: #2d2d2d;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            border-radius: 8px;
+            margin: 20px;
         }
         .container {
             display: flex;
             flex-wrap: wrap;
             justify-content: space-around;
             align-items: center;
-            padding: 20px;
             max-width: 1000px;
-            margin: auto;
-            background-color: #2d2d2d;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-            border-radius: 8px;
+            margin: 20px;
         }
         .title {
             width: 100%;
@@ -52,81 +60,73 @@
             transform: scale(1.05);
             box-shadow: 0 0 15px rgba(255, 193, 7, 0.5);
         }
-    </style>
-</head>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #1c1c1c;
-            color: white;
-            margin: 0;
-            padding: 0;
+        .drivers-container {
             display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
-        .container {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-around;
-            align-items: center;
+            flex-direction: column;
+            justify-content: flex-start;
             padding: 20px;
-            max-width: 1000px;
-            margin: auto;
+            border-radius: 8px;
             background-color: #2d2d2d;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-            border-radius: 8px;
+            margin-left: 20px;
         }
-        .title {
-            width: 100%;
+        .drivers-container h3 {
             text-align: center;
-            margin-bottom: 20px;
-        }
-        .title h2 {
-            margin: 0;
+            margin: 0 0 20px 0;
             color: #ffc107;
         }
-        .image-container {
+        .driver-pair {
+            margin: 10px 0;
             text-align: center;
-            margin: 10px;
         }
-        .image-container img {
-            max-width: 300px;
-            max-height: 300px;
-            margin: 10px;
+        .map-container {
+            width: 100%;
+            height: 500px;
+            margin-top: 20px;
             border-radius: 8px;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            overflow: hidden;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
         }
-        .image-container img:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 15px rgba(255, 193, 7, 0.5);
+        .map-container iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="title">
-            <h2>Corner {{ index }} of {{ track_name.capitalize() }}</h2>
+    <div class="main-container">
+        <div class="container">
+            <div class="title">
+                <h2>Corner {{ index }} of {{ track_name }}</h2>
+            </div>
+            <div class="image-container">
+                <img src="{{ url_for('static', filename='dashboard/' ~ track_name ~ '/corner' ~ index ~ '/Trajectory.png') }}" alt="Plot 1">
+            </div>
+            <div class="image-container">
+                <img src="{{ url_for('static', filename='dashboard/' ~ track_name ~ '/corner' ~ index ~ '/Brake.png') }}" alt="Plot 2">
+            </div>
+            <div class="image-container">
+                <img src="{{ url_for('static', filename='dashboard/' ~ track_name ~ '/corner' ~ index ~ '/Speed.png') }}" alt="Plot 3">
+            </div>
+            <div class="image-container">
+                <img src="{{ url_for('static', filename='dashboard/' ~ track_name ~ '/corner' ~ index ~ '/Throttle.png') }}" alt="Plot 4">
+            </div>
+            <div class="image-container">
+                <img src="{{ url_for('static', filename='dashboard/' ~ track_name ~ '/corner' ~ index ~ '/' ~ track_name ~ '.gif') }}" alt="Plot 5">
+            </div>
         </div>
-        <div class="image-container">
-            <img src="{{ url_for('static', filename='dashboard/' ~ track_name ~ '/corner' ~ index ~ '/trajectory.png') }}" alt="Plot 1">
+        <div class="drivers-container">
+            <h3>Driver Pairings</h3>
+            {% for pair in clusters_with_names %}
+                <div class="driver-pair">
+                    {{ pair[0] }} & {{ pair[1] }}
+                </div>
+            {% endfor %}
         </div>
-        <div class="image-container">
-            <img src="{{ url_for('static', filename='dashboard/' ~ track_name ~ '/corner' ~ index ~ '/Brake.png') }}" alt="Plot 2">
-        </div>
-        <div class="image-container">
-            <img src="{{ url_for('static', filename='dashboard/' ~ track_name ~ '/corner' ~ index ~ '/Speed.png') }}" alt="Plot 3">
-        </div>
-        <div class="image-container">
-            <img src="{{ url_for('static', filename='dashboard/' ~ track_name ~ '/corner' ~ index ~ '/Throttle.png') }}" alt="Plot 4">
-        </div>
+    </div>
+    <div class="map-container">
+        <iframe src="{{ url_for('static', filename='dashboard/' ~ track_name ~ '/' ~ track_name ~ '.html') }}"></iframe>
     </div>
 </body>
 </html>

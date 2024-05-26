@@ -82,15 +82,16 @@
                 <select name="year">
                     <option value="2023">2023</option>
                     <option value="2022">2022</option>
-                    <option value="2021">2021</option>
                     <!-- Add more years as needed -->
                 </select>
             </div>
             <div class="dropdown">
                 <span class="icon">🏁</span>
                 <select name="track">
-                    <option value="monza">Monza Grand Prix</option>
+                    <option value="Monza">Monza Grand Prix</option>
                     <option value="Spielberg">Spielberg Grand Prix</option>
+                    <option value="Sakhir">Sakhir Grand Prix</option>
+                    <option value="Zandvoort">Zandvoort Grand Prix</option>
                     <!-- Add more tracks as needed -->
                 </select>
             </div>
@@ -99,8 +100,17 @@
                 <select name="event_type">
                     <option value="R">Race</option>
                     <option value="Q">Qualifying</option>
-                    <option value="P">Practice</option>
                     <!-- Add more event types as needed -->
+                </select>
+            </div>
+            <div class="dropdown">
+                <span class="icon">🕒</span>
+                <select name="lap">
+                    <option value="All Laps">All Laps</option>
+                    <!-- Add options for laps 1 to 10 -->
+                    {% for i in range(1, 11) %}
+                        <option value="{{ i }}">Lap {{ i }}</option>
+                    {% endfor %}
                 </select>
             </div>
         </div>
@@ -114,12 +124,24 @@
                 Speed
             </label>
             <label class="checkbox">
-                <input type="checkbox" name="breaking" value="breaking">
-                Breaking
+                <input type="checkbox" name="braking" value="braking">
+                Braking
+            </label>
+            <label class="checkbox">
+                <input type="checkbox" name="trajectory" value="trajectory">
+                Trajectory
+            </label>
+            <label class="checkbox">
+                <input type="checkbox" name="folium" value="folium">
+                Folium
+            </label>
+            <label class="checkbox">
+                <input type="checkbox" name="gif" value="gif">
+                GIF
             </label>
             <label class="checkbox">
                 <input type="checkbox" name="cluster" value="cluster">
-                Cluster
+                Driver Pairings
             </label>
         </div>
         <button type="submit" class="submit-btn">Submit</button>

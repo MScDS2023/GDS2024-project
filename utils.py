@@ -50,9 +50,15 @@ def create_buffered_track(geojson_path: str):
 
 def mapping_dict(track: str):
     d = {
-        "monza": "bacinger f1-circuits master circuits/it-1922.geojson",
-        "bahrain":"bacinger f1-circuits master circuits/bh-2002.geojson",
-        "Spielberg": "bacinger f1-circuits master circuits/at-1969.geojson"
+        "Monza": "bacinger f1-circuits master circuits/it-1922.geojson",
+        "Sakhir":"bacinger f1-circuits master circuits/bh-2002.geojson",
+        "Spielberg": "bacinger f1-circuits master circuits/at-1969.geojson",
+        "Spa Francorchamps": "bacinger f1-circuits master circuits/be-1925.geojson",
+        "Monaco":"bacinger f1-circuits master circuits/mc-1929.geojson",
+        "Melbourne":"bacinger f1-circuits master circuits/au-1953.geojson",
+        "Silverstone":"bacinger f1-circuits master circuits/gb-1948.geojson",
+        "Zandvoort":"bacinger f1-circuits master circuits/nl-1948.geojson"
+
     }
     return d[track]
 
@@ -64,8 +70,8 @@ def coordinate_shift(original_centroid, f1_api_coords):
       
     # conversion factors - these are approximations, adjust as necessary  
     # 1 degree of latitude is approximately 111 km, and 1 degree of longitude is approximately 111 km multiplied by the cosine of the latitude  
-    km_per_degree_lat = 1 / 111  
-    km_per_degree_lon = 1 / (111 * math.cos(math.radians(centroid_lat)))  
+    km_per_degree_lat = 1 / 110.574  
+    km_per_degree_lon = 1 / (111.320 * math.cos(math.radians(centroid_lat)))  
     
     # your array of tuples  
     xy_coordinates = f1_api_coords
@@ -151,17 +157,27 @@ def get_corners(session):
     return corners_df
 
 
-def get_corners_transformed(session,centroid, track_name):
+def shift_centroid_new(relative_line,dx, dy):
+    # Shift the LineString  
+    shifted_line = translate(relative_line, xoff=dx, yoff=dy)  
+    return shifted_line
+
+
+
+def get_corners_transformed(session,centroid, track_name,dx_dy):
     data = get_corners(session)
     coords = [(row['Y'],row['X']) for index,row in data.iterrows()]
 
     scaled_down = coordinate_shift(centroid, coords)
-    if track_name == "monza":
+    if track_name == "Monza":
         shifted_line = shift_centroid_monza(scaled_down)
     elif track_name == "Spielberg":
         shifted_line = shift_centroid_redbull_ring(scaled_down)
     else:
-        print("miav??")
+        print(dx_dy,"hejsa")
+        dx, dy = dx_dy
+        shifted_line = shift_centroid_new(scaled_down,dx,dy)
+
 
     data['shifted_x'] = [x for x, y in shifted_line.coords]
     data['shifted_y'] = [y for x, y in shifted_line.coords]
@@ -172,7 +188,6 @@ def get_corners_transformed(session,centroid, track_name):
 def create_track_buffered(track_geojson):
     # Load the GeoDataFrame
     monza_track = gpd.read_file(track_geojson) #This is monza
-    #monza_track = gpd.read_file("bacinger f1-circuits master circuits/nl-1948.geojson")
 
     monza_track_projected = monza_track.to_crs(epsg=32632)
 
@@ -198,7 +213,7 @@ def add_marker(map, centroid, track_name, index):
 
 
 
-def folium_with_corners(year, track_name, event_type):
+def folium_with_corners(year, track_name, event_type,dx_dy):
     track_geojson = mapping_dict(track_name)
 
     session = pull_data(year, track_name, event_type)
@@ -209,7 +224,7 @@ def folium_with_corners(year, track_name, event_type):
     centroid = track.geometry.centroid.iloc[0]
 
 
-    all_centroids = get_corners_transformed(session,centroid, track_name)
+    all_centroids = get_corners_transformed(session,centroid, track_name, dx_dy)
     # Create a folium map centered at the centroid
     m = folium.Map(location=[centroid.y, centroid.x], zoom_start=15)
 
