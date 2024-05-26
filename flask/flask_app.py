@@ -90,15 +90,14 @@ def display_track():
     event_type = request.form.get('event_type')
     num_laps = request.form.get('lap')
         # Get checkbox values
-    track = "Spa Francorchamps"
 
     d["Throttle"] = request.form.get('throttle') == 'throttle'
     d["Speed"] = request.form.get('speed') == 'speed'
     d["Brake"] = request.form.get('braking') == 'braking'
     d["Cluster"] = request.form.get('cluster') == 'cluster'
-    d["Trajectory"] = False
-    d["Folium"] = True
-
+    d["Trajectory"] = request.form.get('trajectory') == 'trajectory'
+    d["Folium"] = request.form.get('folium') == 'folium'
+    d["Separate Laps"] = request.form.get('gif') == 'gif'
    
     dx_dy =  runner_function(track,d, year,event_type, num_laps)
     

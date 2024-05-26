@@ -31,7 +31,8 @@ def find_track(directory, track):
     return None
 
 
-def get_laps(session):
+
+def get_laps(session, num_laps):
     telemetry_data = dict()
     drivers = session.drivers
     laps = session.laps
@@ -40,8 +41,10 @@ def get_laps(session):
         driver_telemetry = []
         try:
             driver_laps = laps.pick_driver(driver)
-            for lap in driver_laps.iterlaps():
-
+            for counter, lap in enumerate(driver_laps.iterlaps()):
+                if num_laps != "All Laps":
+                    if counter == num_laps:
+                        break
                 telemetry = lap[1].get_telemetry()
                 telemetry['LapNumber'] = lap[1]['LapNumber']
                 driver_telemetry.append(telemetry)
@@ -60,7 +63,7 @@ def get_laps(session):
     concatenated_df.reset_index(drop=True, inplace=True)
     concatenated_df['LapNumber'] = concatenated_df['LapNumber'].astype(int)
     concatenated_df = concatenated_df[(concatenated_df['Source'] == 'car') & (concatenated_df['Status'] == 'OnTrack')]
-    
+    print(concatenated_df.LapNumber.unique())
     return concatenated_df
 
 def interpolate(df):
@@ -379,13 +382,8 @@ def runner_function(track_name:str,input_dict:dict,year:int,event_type:str,num_l
     session_load = fastf1.get_session(year, track, event_type)
     session_load.load(telemetry=True, laps=True, weather=False)        
     print("oiengouwenbgouwb")
-    df = get_laps(session_load) # long time
+    df = get_laps(session_load,num_laps) # long time
 
-    if num_laps != 'All Laps':
-        num_laps = int(num_laps)
-        df[df['LapNumber'] <= num_laps]
-    else:
-        pass
 
     interpolated_df = interpolate(df) # long time 
 

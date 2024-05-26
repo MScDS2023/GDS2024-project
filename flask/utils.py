@@ -51,7 +51,7 @@ def create_buffered_track(geojson_path: str):
 def mapping_dict(track: str):
     d = {
         "Monza": "../bacinger f1-circuits master circuits/it-1922.geojson",
-        "bahrain":"../bacinger f1-circuits master circuits/bh-2002.geojson",
+        "Bahrain":"../bacinger f1-circuits master circuits/bh-2002.geojson",
         "Spielberg": "../bacinger f1-circuits master circuits/at-1969.geojson",
         "Spa Francorchamps": "../bacinger f1-circuits master circuits/be-1925.geojson"
     }
