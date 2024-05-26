@@ -83,7 +83,7 @@ def dashboard():
 @app.route('/idk', methods=['POST'])
 def display_track():
     d = dict()
-    year = int(request.form.get('year'))
+    year = 2023
     track = request.form.get('track')
     event_type = request.form.get('event_type')
     num_laps = request.form.get('lap')
