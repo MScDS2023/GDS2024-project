@@ -324,7 +324,7 @@ def distance_func(driver1, driver2,df,lapnumber):
             if distance < 100:
                 dist.append(distance)
             else:
-                break  
+                continue  
     if dist:
         mean_distance = np.mean(dist)
     else:
