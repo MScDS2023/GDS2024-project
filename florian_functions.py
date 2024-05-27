@@ -315,13 +315,13 @@ def create_gif(image_folder, save_path):
 
 def distance_func(driver1, driver2,df,lapnumber):
     dist = []
-    driver1_geometries = pd.DataFrame(df[(df['driver'] == driver1) & (df['LapNumber'] == lapnumber)]['geometry']).sort_values(by = 'geometry')
-    driver2_geometries = pd.DataFrame(df[(df['driver'] == driver2) & (df['LapNumber'] == lapnumber)]['geometry']).sort_values(by = 'geometry')
+    driver1_geometries = pd.DataFrame(df[(df['driver'] == driver1) & (df['LapNumber'] == lapnumber)]['geometry'])
+    driver2_geometries = pd.DataFrame(df[(df['driver'] == driver2) & (df['LapNumber'] == lapnumber)]['geometry'])
     
-    for i in driver1_geometries['geometry']:
-        for j in driver2_geometries['geometry']:
+    for i in set(driver1_geometries['geometry']):
+        for j in set(driver2_geometries['geometry']):
             distance = i.distance(j)
-            if distance < 100:
+            if distance < 50:
                 dist.append(distance)
             else:
                 continue  
